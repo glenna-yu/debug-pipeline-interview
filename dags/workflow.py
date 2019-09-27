@@ -11,15 +11,11 @@ default_args = {
     "depends_on_past": False,
     "start_date": datetime(2019, 1, 1),
     "retries": 0,
-    # 'queue': 'bash_queue',
-    # 'pool': 'backfill',
-    # 'priority_weight': 10,
-    # 'end_date': datetime(2016, 1, 1),
 }
 
-dag = DAG("tutorial", default_args=default_args, schedule_interval=None)
+dag = DAG("debug_pipeline", default_args=default_args, schedule_interval=None)
 
-download_stations_data = PythonOperator(
+download_stations_data_task = PythonOperator(
     task_id="download_stations_data",
     python_callable=download_url_data,
     op_kwargs={
@@ -29,7 +25,7 @@ download_stations_data = PythonOperator(
     dag=dag,
 )
 
-download_states_data = PythonOperator(
+download_states_data_task = PythonOperator(
     task_id="download_states_data",
     python_callable=download_url_data,
     op_kwargs={
@@ -39,7 +35,7 @@ download_states_data = PythonOperator(
     dag=dag,
 )
 
-join_stations_and_states = PythonOperator(
+join_stations_and_states_task = PythonOperator(
     task_id="join_stations_and_states",
     python_callable=join_stations_and_states,
     op_kwargs={
@@ -48,5 +44,9 @@ join_stations_and_states = PythonOperator(
         "output_path": "/root/data/stations-and-states.csv",
     },
     dag=dag,
+)
+
+join_stations_and_states_task.set_upstream(
+    [download_stations_data_task, download_states_data_task]
 )
 
