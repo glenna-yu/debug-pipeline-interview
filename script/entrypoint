@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -m
+
+echo "Initializing airflow database..."
+airflow initdb || exit 1
+
+echo "Starting airflow webserver..."
+airflow webserver -p 8080 -w 2 &
+
+echo "Starting airflow scheduler..."
+airflow scheduler -D
+
+fg %1
