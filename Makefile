@@ -2,13 +2,13 @@
 up: build run
 
 build:
-	docker build -t enigma.gluo/debug-pipeline-interview:0.0.1 .
+	docker build -t debug-pipeline-interview:0.0.1 .
 
 build-no-cache:
-	docker build --no-cache -i -t enigma.gluo/debug-pipeline-interview:0.0.1 .
+	docker build --no-cache -i -t debug-pipeline-interview:0.0.1 .
 
 run:
-	docker run --rm -d -p 8080:8080 --name="debug-pipeline-interview" enigma.gluo/debug-pipeline-interview:0.0.1
+	docker run --rm -d -p 8080:8080 --name="debug-pipeline-interview" debug-pipeline-interview:0.0.1
 
 stop:
 	docker stop debug-pipeline-interview
