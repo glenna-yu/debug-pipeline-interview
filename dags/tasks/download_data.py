@@ -1,21 +1,18 @@
-import os
 import shutil
 import urllib.request as request
 
 from contextlib import closing
 
+# data from ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/
 
-def download_url_data(url, output_path):
 
-    parent_directory = os.path.dirname(output_path)
-
-    with closing(request.urlopen(url)) as r:
-        with open(output_path, "wb+") as f:
+def download_data():
+    stations_url = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-stations.txt"
+    with closing(request.urlopen(stations_url)) as r:
+        with open("/root/data/ghcnd-stations.txt", "wb+") as f:
             shutil.copyfileobj(r, f)
 
-    return output_path
-
-
-def create_target_directory(directory_path):
-    if not os.path.exists(directory_path):
-        os.makedirs(directory_path)
+    stations_url = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-states.txt"
+    with closing(request.urlopen(stations_url)) as r:
+        with open("/root/data/ghcnd-states.txt", "wb+") as f:
+            shutil.copyfileobj(r, f)
