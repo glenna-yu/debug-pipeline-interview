@@ -12,6 +12,16 @@ def join_stations_and_states(stations_path, states_path, output_path):
     joined_df.to_csv(output_path)
 
 
+def get_station_data():
+    stations_and_states_csv = "/root/data/stations-and-states.csv"
+    state = "New York"
+    stations_and_states = pd.read_csv(stations_and_states_csv)
+
+    station_ids = stations_and_states[stations_and_states['STATE'] == state]['ID']
+
+    return station_ids
+
+
 def read_stations_fwf(stations_path):
     station_columns = [
         "ID",

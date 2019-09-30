@@ -3,7 +3,8 @@ from datetime import datetime
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from tasks.download_data import download_data
-from tasks.join_stations_and_states import join_stations_and_states
+from tasks.join_stations_and_states import get_station_data, join_stations_and_states
+
 
 default_args = {
     "owner": "Enigma",
@@ -31,4 +32,12 @@ join_stations_and_states_task = PythonOperator(
     dag=dag,
 )
 
+get_station_data_task = PythonOperator(
+    task_id="get_station_data",
+    python_callable=get_station_data,
+    dag=dag,
+
+)
+
 download_data_task.set_downstream(join_stations_and_states_task)
+join_stations_and_states_task.set_downstream(get_station_data_task)
